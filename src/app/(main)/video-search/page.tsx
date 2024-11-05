@@ -4,9 +4,11 @@ import { VideoSearch } from "../_components/video-search";
 
 const VideoSearchPage = () => {
   return (
-    <div className=" h-screen w-screen flex flex-col items-center ">
+    <div className="h-screen w-screen flex flex-col items-center pt-16">
       <Navbar />
-      <VideoSearch />
+      <div className="mt-9">
+        <VideoSearch />
+      </div>
     </div>
   );
 };

@@ -1,26 +1,65 @@
-import { Search } from "lucide-react";
-import React from "react";
-import Link from "next/link"; // Import Link from Next.js
+"use client";
+import React, { useState } from "react";
+import Link from "next/link";
+import { HiMenu, HiX } from "react-icons/hi";
+import Image from "next/image";
 
 export const Navbar = () => {
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
-    <div className="mb-4 h-16 w-full flex items-center justify-between px-4">
-      <div className="h-full flex items-center">
-        <h1 className="text-2xl font-bold">Video Search</h1>
-        <Search className="ml-2" />
-      </div>
-      <div className="flex gap-4">
-        <Link href="/add-video">
-          <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-            Add Video
-          </button>
+    <nav className="bg-black shadow-md fixed top-0 w-full z-50">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        {/* Branding Section */}
+        <Link href="/" className="flex items-center space-x-3">
+          <Image src="/logo.png" alt="Logo" width={32} height={32} />
+          <span className="self-center text-2xl font-semibold text-white">
+            VideoApp
+          </span>
         </Link>
-        <Link href="/video-search">
-          <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-            Video Search
-          </button>
-        </Link>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
+          className="inline-flex items-center p-2 w-10 h-10 justify-center text-gray-500 rounded-lg md:hidden hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:focus:ring-gray-600"
+          aria-controls="navbar-default"
+          aria-expanded={isMobileMenuOpen}
+        >
+          <span className="sr-only">Open main menu</span>
+          {isMobileMenuOpen ? (
+            <HiX className="w-6 h-6 text-white" />
+          ) : (
+            <HiMenu className="w-6 h-6 text-white" />
+          )}
+        </button>
+
+        {/* Navigation Links */}
+        <div
+          className={`w-full md:flex md:w-auto ${
+            isMobileMenuOpen ? "block" : "hidden"
+          }`}
+          id="navbar-default"
+        >
+          <ul className="font-medium flex flex-col p-4 mt-4 space-y-2 bg-black md:flex-row md:space-y-0 md:space-x-8 md:mt-0 md:bg-black">
+            <li>
+              <Link
+                href="/add-video"
+                className="block py-2 px-3 text-white rounded hover:bg-gray-700 md:hover:bg-black md:border-0 md:p-0"
+              >
+                Add Video
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/video-search"
+                className="block py-2 px-3 text-white rounded hover:bg-gray-700 md:hover:bg-black md:border-0 md:p-0"
+              >
+                Video Search
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 };
