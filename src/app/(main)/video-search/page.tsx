@@ -4,9 +4,9 @@ import { VideoSearch } from "../_components/video-search";
 
 const VideoSearchPage = () => {
   return (
-    <div className="h-screen w-screen flex flex-col items-center pt-16">
+    <div className=" bg-gray-900 h-screen w-screen flex flex-col items-center pt-16">
       <Navbar />
-      <div className="mt-9">
+      <div className="mt-20">
         <VideoSearch />
       </div>
     </div>

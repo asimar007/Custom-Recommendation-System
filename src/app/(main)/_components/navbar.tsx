@@ -1,21 +1,18 @@
 "use client";
 import React, { useState } from "react";
-import Link from "next/link";
 import { HiMenu, HiX } from "react-icons/hi";
+import Link from "next/link";
 import Image from "next/image";
 
 export const Navbar = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-black shadow-md fixed top-0 w-full z-50">
+    <nav className="bg-gray-900 fixed top-0 w-full z-50">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         {/* Branding Section */}
         <Link href="/" className="flex items-center space-x-3">
-          <Image src="/logo.png" alt="Logo" width={32} height={32} />
-          <span className="self-center text-2xl font-semibold text-white">
-            VideoApp
-          </span>
+          <Image src="/logo1.png" alt="Logo" width={80} height={80} />
         </Link>
 
         {/* Mobile Menu Button */}
@@ -35,24 +32,22 @@ export const Navbar = () => {
 
         {/* Navigation Links */}
         <div
-          className={`w-full md:flex md:w-auto ${
-            isMobileMenuOpen ? "block" : "hidden"
-          }`}
+          className={`w-full md:flex md:w-auto ${isMobileMenuOpen ? "block" : "hidden"}`}
           id="navbar-default"
         >
-          <ul className="font-medium flex flex-col p-4 mt-4 space-y-2 bg-black md:flex-row md:space-y-0 md:space-x-8 md:mt-0 md:bg-black">
+          <ul className="font-medium flex flex-col p-4 mt-4 space-y-2 bg-gray-900 md:flex-row md:space-y-0 md:space-x-8 md:mt-0">
             <li>
               <Link
                 href="/add-video"
-                className="block py-2 px-3 text-white rounded hover:bg-gray-700 md:hover:bg-black md:border-0 md:p-0"
+                className="block py-2 px-3 text-white rounded hover:bg-gray-700 md:hover:bg-gray-900 md:border-0 md:p-0"
               >
-                Add Video
+                Upload Video
               </Link>
             </li>
             <li>
               <Link
                 href="/video-search"
-                className="block py-2 px-3 text-white rounded hover:bg-gray-700 md:hover:bg-black md:border-0 md:p-0"
+                className="block py-2 px-3 text-white rounded hover:bg-gray-700 md:hover:bg-gray-900 md:border-0 md:p-0"
               >
                 Video Search
               </Link>

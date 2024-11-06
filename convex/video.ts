@@ -27,7 +27,6 @@ export const similarVideos = action({
   args: { query: v.string() },
   handler: async (ctx, args) => {
     const embeddings = await embedd(args.query);
-    console.log("Embeddings:", embeddings);
 
     const result = await ctx.vectorSearch("videos", "by_search", {
       vector: embeddings,

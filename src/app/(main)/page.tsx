@@ -12,29 +12,45 @@ const Page = () => {
 
   if (videos === undefined) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-screen bg-gray-900">
         <CircleLoader color="#f9f1f1" size={60} />
       </div>
     );
   }
   if (videos === null) {
-    return <div>Videos not found</div>;
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
+        <h1 className="text-2xl font-semibold">Videos not found</h1>
+      </div>
+    );
   }
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center pt-16">
+    <div className="min-h-screen flex flex-col items-center bg-gray-900 text-white">
       <Navbar />
-      <div className="mt-9"></div>
-      <div className="w-full max-w-3xl mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">All Videos</h1>
-        <div className="grid grid-cols-1 gap-4">
-          {videos.map((video, index) => (
-            <Link href={`/videos/${video._id}`} key={index}>
-              <VideoCard
-                title={video.title}
-                description={video.description}
-                thumbnail={video.thumbnail}
-              />
+      <div className="w-full max-w-6xl mx-auto px-4 py-8 pt-28">
+        <h1 className="text-4xl font-bold text-center text-pink-500 mb-6">
+          Explore Our Videos
+        </h1>
+        <p className="text-center text-gray-400 mb-10">
+          Discover our collection of informative and engaging video content.
+        </p>
+
+        {/* Grid Layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {videos.map((video) => (
+            <Link
+              href={`/videos/${video._id}`}
+              key={video._id}
+              className="group"
+            >
+              <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg transition-transform duration-200 transform group-hover:scale-105 hover:shadow-2xl">
+                <VideoCard
+                  title={video.title}
+                  description={video.description}
+                  thumbnail={video.thumbnail}
+                />
+              </div>
             </Link>
           ))}
         </div>
