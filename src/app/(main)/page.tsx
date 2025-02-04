@@ -1,14 +1,52 @@
 "use client";
 
-import { useQuery } from "convex/react";
+import { useAction, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import VideoCard from "./_components/video-card";
-import Link from "next/link";
-import { Navbar } from "./_components/navbar";
 import CircleLoader from "react-spinners/ClipLoader";
+import { useState } from "react";
+import { Header } from "./_components/Header";
+import { Hero } from "./_components/Hero";
+import { Footer } from "./_components/Footer";
+
+interface Video {
+  _id: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+}
 
 const Page = () => {
   const videos = useQuery(api.video.allVideos);
+  const [search, setSearch] = useState("");
+  const [searchResults, setSearchResults] = useState<Video[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const vidSearch = useAction(api.video.similarVideos);
+
+  const handleSearch = async () => {
+    if (!search.trim()) {
+      setIsSearching(false);
+      setSearchResults([]);
+      return;
+    }
+    setIsSearching(true);
+    setIsLoading(true);
+    try {
+      const results = await vidSearch({ query: search });
+      setSearchResults(results);
+    } catch (error) {
+      console.error("Search error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleClear = () => {
+    setSearch("");
+    setIsSearching(false);
+    setSearchResults([]);
+  };
 
   if (videos === undefined) {
     return (
@@ -17,44 +55,27 @@ const Page = () => {
       </div>
     );
   }
-  if (videos === null) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
-        <h1 className="text-2xl font-semibold">Videos not found</h1>
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-900 text-white">
-      <Navbar />
-      <div className="w-full max-w-6xl mx-auto px-4 py-8 pt-28">
-        <h1 className="text-4xl font-bold text-center text-pink-500 mb-6">
-          Explore Our Videos
-        </h1>
-        <p className="text-center text-gray-400 mb-10">
-          Discover our collection of informative and engaging video content.
-        </p>
-
-        {/* Grid Layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {videos.map((video) => (
-            <Link
-              href={`/videos/${video._id}`}
-              key={video._id}
-              className="group"
-            >
-              <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg transition-transform duration-200 transform group-hover:scale-105 hover:shadow-2xl">
-                <VideoCard
-                  title={video.title}
-                  description={video.description}
-                  thumbnail={video.thumbnail}
-                />
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
+    <div className="min-h-screen flex flex-col bg-gray-900 text-white">
+      <Header
+        search={search}
+        isSearching={isSearching}
+        isLoading={isLoading}
+        onSearchChange={(value) => setSearch(value)}
+        onSearch={handleSearch}
+        onClear={handleClear}
+      />
+      <main className="flex-1 pt-20">
+        <Hero
+          videos={videos || []}
+          searchResults={searchResults}
+          isSearching={isSearching}
+          isLoading={isLoading}
+          searchQuery={search}
+        />
+      </main>
+      <Footer />
     </div>
   );
 };
