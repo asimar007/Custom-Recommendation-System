@@ -7,25 +7,51 @@ import Image from "next/image";
 import VideoCard from "../../_components/video-card";
 import { PlayIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { video } from "../../_components/video-search";
+interface Video {
+  title: string;
+  description: string;
+  thumbnail: string;
+}
 import BounceLoader from "react-spinners/BounceLoader";
-import { Navbar } from "../../_components/navbar";
+import { Header } from "../../_components/Header"; // Updated import
 
-const Page = ({
-  params,
-}: {
-  params: {
-    id: string;
-  };
-}) => {
+const Page = ({ params }: { params: { id: string } }) => {
   const video = useQuery(api.video.getVideo, {
     id: params.id as Id<"videos">,
   });
 
-  const [videos, setVideos] = useState<video[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
   const [expanded, setExpanded] = useState(false);
+  const [search, setSearch] = useState("");
+  // Remove unused state since searchResults is not being used anywhere
+  const [isSearching, setIsSearching] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const vidSearch = useAction(api.video.similarVideos);
+
+  const handleSearch = async () => {
+    if (!search.trim()) {
+      setIsSearching(false);
+      setVideos([]);
+      return;
+    }
+    setIsSearching(true);
+    setIsLoading(true);
+    try {
+      const results = await vidSearch({ query: search });
+      setVideos(results);
+    } catch (error) {
+      console.error("Search error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleClear = () => {
+    setSearch("");
+    setIsSearching(false);
+    setVideos([]);
+  };
 
   useEffect(() => {
     if (video) {
@@ -50,8 +76,14 @@ const Page = ({
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      {/* Fixed Navbar */}
-      <Navbar />
+      <Header
+        search={search}
+        isSearching={isSearching}
+        isLoading={isLoading}
+        onSearchChange={(value) => setSearch(value)}
+        onSearch={handleSearch}
+        onClear={handleClear}
+      />
 
       {/* Page Content */}
       <div className="pt-32 px-4 flex flex-col lg:flex-row gap-6">
