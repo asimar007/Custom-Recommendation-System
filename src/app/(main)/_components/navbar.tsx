@@ -44,14 +44,6 @@ export const Navbar = () => {
                 Upload Video
               </Link>
             </li>
-            <li>
-              <Link
-                href="/video-search"
-                className="block py-2 px-3 text-white rounded hover:bg-gray-700 md:hover:bg-gray-900 md:border-0 md:p-0"
-              >
-                Video Search
-              </Link>
-            </li>
           </ul>
         </div>
       </div>
