@@ -1,5 +1,4 @@
 import Link from "next/link";
-//import VideoCard from "./video-card";
 import Image from "next/image";
 
 interface Video {
