@@ -1,12 +1,12 @@
 "use client";
 
 import { useAction, useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../convex/_generated/api";
 import CircleLoader from "react-spinners/ClipLoader";
 import { useState } from "react";
-import { Header } from "./_components/Header";
-import { Hero } from "./_components/Hero";
-import { Footer } from "./_components/Footer";
+import { Header } from "./(main)/_components/Header";
+import { Hero } from "./(main)/_components/Hero";
+import { Footer } from "./(main)/_components/Footer";
 
 interface Video {
   _id: string;
